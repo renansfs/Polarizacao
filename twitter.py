@@ -1,6 +1,6 @@
 import json
 import secret
-import pymongo
+from db import DataBase
 from requests_oauthlib import OAuth1Session
 
 class Follower(object):
@@ -79,10 +79,14 @@ class TwitterSearch(object):
                 follower.addHashTag(hashtag)
             self.politiciansFollowers.add(follower)
         return
+    def getPolitician(self):
+        return self.politiciansFollowers
         
 client = TwitterSearch()
 client.getHashTagsFromUserByPolitician(128372940, 10, 100)
-
+myDb = DataBase()
+politicianData = client.getPolitician()
+myDb.create(politicianData)
 
 #hashtags = client.getHashTagsFromUserByPolitician(128372940, 50, 4000)
 
