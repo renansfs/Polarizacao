@@ -1,6 +1,6 @@
 import json
 import secret
-from db import DataBase
+# from db import DataBase
 from requests_oauthlib import OAuth1Session
 
 class Follower(object):
@@ -8,9 +8,6 @@ class Follower(object):
 
     def __init__(self, followerId):
         self.followerId = followerId
-
-    def addHashTag(self, hashtag):
-        self.user_hashtags.add(str(hashtag))
 
 class Politician(Follower):
     users_followers = set()
@@ -32,7 +29,7 @@ class TwitterSearch(object):
     # user_id = ID do usuario
     # maxNumberOfPosts = quantidade de posts da timeline de user_id
     def getHashTagsFromTimeLine(self, user_id, maxNumberOfPosts):
-        hashtags_list = []
+        hashtags_list = set()
 
         response = self.session.get("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=" + str(user_id) + "&count=" + str(maxNumberOfPosts))    
         content = json.loads(response.content)
@@ -44,8 +41,7 @@ class TwitterSearch(object):
                 if(len(hashtags) > 0):
                     for texts in hashtags:
                         hashtag = texts['text']
-                        if(hashtag not in hashtags_list):
-                            hashtags_list.append(hashtag)
+                        hashtags_list.add(hashtag)
 
         return hashtags_list
 
@@ -55,7 +51,7 @@ class TwitterSearch(object):
 
         response = self.session.get("https://api.twitter.com/1.1/followers/ids.json?user_id=" + str(politicianId) + "&count=" + str(maxNumberOfFollowers))    
         content = json.loads(response.content)
-
+        
         if 'errors' in content:
             for errors in content['errors']:
                 message = errors['message']
@@ -73,20 +69,19 @@ class TwitterSearch(object):
 
         for followerId in politicianFollowersId:
             follower = Follower(followerId)
-            hashtags = self.getHashTagsFromTimeLine(followerId, maxNumberOfPosts)
+            follower.user_hashtags = self.getHashTagsFromTimeLine(followerId, maxNumberOfPosts)
 
-            for hashtag in hashtags:
-                follower.addHashTag(hashtag)
             self.politiciansFollowers.add(follower)
         return
+
     def getPolitician(self):
         return self.politiciansFollowers
         
 client = TwitterSearch()
-client.getHashTagsFromUserByPolitician(128372940, 10, 100)
-myDb = DataBase()
-politicianData = client.getPolitician()
-myDb.create(politicianData)
+client.getHashTagsFromUserByPolitician(128372940, 10, 5000)
+# myDb = DataBase()
+# politicianData = client.getPolitician()
+# myDb.create(politicianData)
 
 #hashtags = client.getHashTagsFromUserByPolitician(128372940, 50, 4000)
 
@@ -94,4 +89,3 @@ for user in client.politiciansFollowers:
     print ("\nUser: %s" % user.followerId)
     for hashtag in user.user_hashtags:
         print (hashtag)
-#    print(hashtag)
