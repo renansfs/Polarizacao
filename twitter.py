@@ -16,13 +16,14 @@ class TwitterSearch(object):
         content = json.loads(response.content)
      
         for tweet in content:
-            hashtags = tweet['entities']['hashtags']
-            
-            if(len(hashtags) > 0):
-                for texts in hashtags:
-                    hashtag = texts['text']
-                    if(hashtag not in hashtags_list):
-                        hashtags_list.append(hashtag)
+            if 'entities' in tweet:
+                hashtags = tweet['entities']['hashtags']
+                
+                if(len(hashtags) > 0):
+                    for texts in hashtags:
+                        hashtag = texts['text']
+                        if(hashtag not in hashtags_list):
+                            hashtags_list.append(hashtag)
 
         return hashtags_list
 
@@ -61,7 +62,7 @@ class TwitterSearch(object):
             
 
 client = TwitterSearch()
-hashtags = client.get_user_friends_hashtags(128372940, 10, 4000)
+hashtags = client.get_user_friends_hashtags(128372940, 50, 4000)
 
 for hashtag in hashtags:
     print(hashtag)
