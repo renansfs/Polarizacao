@@ -1,6 +1,6 @@
 import json
 import secret
-# from db import DataBase
+from db import DataBase
 from requests_oauthlib import OAuth1Session
 
 class Follower(object):
@@ -8,6 +8,16 @@ class Follower(object):
 
     def __init__(self, followerId):
         self.followerId = followerId
+
+    def __str__(self):
+        return "ID: " + str(self.followerId) + " Hashtags: " + self.get_hashtags()
+
+    def get_hashtags(self):
+        text = ""
+        for hashtag in self.user_hashtags:
+            text += hashtag
+        return text
+
 
 class Politician(Follower):
     users_followers = set()
@@ -21,7 +31,7 @@ class Politician(Follower):
         self.users_followers.add(followerId)
 
 class TwitterSearch(object):
-    politiciansFollowers = set()
+    politiciansFollowers = []
 
     def __init__(self):
         self.session = OAuth1Session(secret.API_KEY, secret.API_SECRET, secret.ACCESS_TOKEN, secret.ACCESS_TOKEN_SECRET)
@@ -51,7 +61,7 @@ class TwitterSearch(object):
 
         response = self.session.get("https://api.twitter.com/1.1/followers/ids.json?user_id=" + str(politicianId) + "&count=" + str(maxNumberOfFollowers))    
         content = json.loads(response.content)
-        
+  
         if 'errors' in content:
             for errors in content['errors']:
                 message = errors['message']
@@ -71,21 +81,22 @@ class TwitterSearch(object):
             follower = Follower(followerId)
             follower.user_hashtags = self.getHashTagsFromTimeLine(followerId, maxNumberOfPosts)
 
-            self.politiciansFollowers.add(follower)
+            self.politiciansFollowers.append(follower)
         return
 
     def getPolitician(self):
         return self.politiciansFollowers
         
 client = TwitterSearch()
-client.getHashTagsFromUserByPolitician(128372940, 10, 5000)
-# myDb = DataBase()
-# politicianData = client.getPolitician()
-# myDb.create(politicianData)
+client.getHashTagsFromUserByPolitician(128372940, 1000, 5000)
+myDb = DataBase()
+
+politicianData = client.getPolitician()
+myDb.create(128372940, politicianData)
 
 #hashtags = client.getHashTagsFromUserByPolitician(128372940, 50, 4000)
 
-for user in client.politiciansFollowers:
-    print ("\nUser: %s" % user.followerId)
-    for hashtag in user.user_hashtags:
-        print (hashtag)
+#for user in client.politiciansFollowers:
+ #   print ("\nUser: %s" % user.followerId)
+  #  for hashtag in user.user_hashtags:
+   #     print (hashtag)

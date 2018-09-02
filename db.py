@@ -7,8 +7,10 @@ class DataBase(object):
         self.mydb = myClient["myPoliticianData"]
         self.politicians = self.mydb["Politicians"]
 
-    def create(self, data):
-        self.politicians.insert(data)
+    def create(self, politician_id, data):
+        for user in data:
+            if(len(user.user_hashtags) > 0):
+                self.politicians[politician_id].insert({"_id" : user.followerId, "hashtags" : list(user.user_hashtags)})
 
     def read(self):
         return
