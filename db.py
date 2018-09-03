@@ -2,21 +2,30 @@ import pymongo
 
 class DataBase(object):
     
-    def __init__(self):
+    def __init__(self, dbName, collectionName):
         myClient = pymongo.MongoClient("mongodb://localhost:27017/")
-        self.mydb = myClient["myPoliticianData"]
-        self.politicians = self.mydb["Politicians"]
+        self.collectionName = collectionName
+        self.dbName = dbName
+        self.mydb = myClient[self.dbName]
+        self.politicians = self.mydb[collectionName]
 
     def create(self, politician_id, data):
         for user in data:
             if(len(user.user_hashtags) > 0):
-                self.politicians[politician_id].insert({"_id" : user.followerId, "hashtags" : list(user.user_hashtags)})
+                self.politicians[politician_id].insert({"_id" : str(user.followerId), "hashtags" : list(user.get_hashtags())})
 
-    def read(self):
-        return
+    def read(self, politician_id):
+        result = self.politicians[politician_id].find()
+        return result
 
     def update(self):
         return
 
-    def delete(self, data):
-        self.politicians.delete(data)
+    def delete(self,politician_id, user):
+        self.politicians[politician_id].remove({"_id" : str(user.followerId), "hashtags" : list(user.get_hashtags())})
+
+    def DropCollection(self):
+        self.mydb[self.dbName].drop()
+        return
+            
+            
