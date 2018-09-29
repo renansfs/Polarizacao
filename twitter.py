@@ -20,15 +20,27 @@ class TwitterSearch(object):
 
         response = self.session.get("https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=" + str(user_id) + "&count=" + str(maxNumberOfPosts))    
         content = json.loads(response.content)
-     
+ 
+        # 16 de agosto - 24 de setembro
         for tweet in content:
-            if 'entities' in tweet:
-                hashtags = tweet['entities']['hashtags']
+            if 'created_at' in tweet:
+                date = tweet.get("created_at").split()
+          
+                month = date[1]
+                day = int(date[2])
+                year = int(date[5])
+
+                print(date)
                 
-                if(len(hashtags) > 0):
-                    for texts in hashtags:
-                        hashtag = texts['text']
-                        hashtags_list.add(hashtag)
+                if (month == "Aug" and day >= 16 and year == 2018) or (month == "Sep" and day <= 24 and year == 2018):
+                    if 'entities' in tweet:
+                        hashtags = tweet['entities']['hashtags']
+                        
+                        if(len(hashtags) > 0):
+                            for texts in hashtags:
+                                hashtag = texts['text']
+                                hashtags_list.add(hashtag)
+            
 
         return hashtags_list
 
