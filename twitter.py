@@ -1,36 +1,14 @@
 import json
 import secret
 from db import DataBase
+from follower import Follower
+from politician import Politician
+from hashtag import HashTags
 from requests_oauthlib import OAuth1Session
 from collections import OrderedDict
 
-class Follower(object):
-
-    def __init__(self, followerId):
-        self.followerId = followerId
-        self.user_hashtags = set()
-
-    def __str__(self):
-        return "ID: " + str(self.followerId) + " Hashtags: " + str(self.get_hashtags())[:]
-
-    def get_hashtags(self):
-        return list(self.user_hashtags)
-
-
-class Politician(Follower):
-    
-    def __init__(self, politicianId, politicianName, politiciaParty):
-        self.politicianId = politicianId
-        self.politicianName = politicianName
-        self.politiciaParty = politiciaParty
-        self.users_followers = set()
-
-    def addFollowerId(self, followerId):
-        self.users_followers.add(followerId)
-
 class TwitterSearch(object):
     
-
     def __init__(self):
         self.session = OAuth1Session(secret.API_KEY, secret.API_SECRET, secret.ACCESS_TOKEN, secret.ACCESS_TOKEN_SECRET)
         self.politiciansFollowers = set()
@@ -86,31 +64,3 @@ class TwitterSearch(object):
     def getPolitician(self):
         return self.politiciansFollowers
 
-class HashTags(object):
-    
-    def __init__(self):
-        self.hashAllTags = dict()
-    
-    def addHashTag(self, hashTag):
-        hashTag = hashTag.lower()
-        if hashTag in self.hashAllTags.keys():
-            self.hashAllTags[hashTag] += 1
-            return
-        self.hashAllTags[hashTag] = 1
-
-    def addListOfHashTags(self, hashTags):
-        for hashTag in hashTags:
-            hashTag = hashTag.lower()
-            if hashTag in self.hashAllTags.keys():
-                self.hashAllTags[hashTag] += 1
-                continue
-            self.hashAllTags[hashTag] = 1
-
-    def Sort(self):
-        self.hashAllTags = sorted(self.hashAllTags.items(), key=lambda value: value[1])
-
-    def Reverse(self):
-        self.hashAllTags = sorted(self.hashAllTags.items(), key=lambda value: value[1], reverse=True)
-    
-    def getHashTags(self):
-        return (self.hashAllTags)
