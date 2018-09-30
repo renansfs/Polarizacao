@@ -66,7 +66,8 @@ class TwitterSearch(object):
 
         response = self.Request(user_id, maxNumberOfPosts, 0)    
         content = json.loads(response.content)
-     
+ 
+        # 16 de agosto - 24 de setembro
         for tweet in content:
             if 'entities' in tweet:
                 hashtags = tweet['entities']['hashtags']
