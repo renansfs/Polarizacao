@@ -66,8 +66,7 @@ class TwitterSearch(object):
 
         response = self.Request(user_id, maxNumberOfPosts, 0)    
         content = json.loads(response.content)
- 
-        # 16 de agosto - 24 de setembro
+     
         for tweet in content:
             if 'entities' in tweet:
                 hashtags = tweet['entities']['hashtags']
@@ -103,7 +102,7 @@ class TwitterSearch(object):
         for followerId in politicianFollowersId:
             follower = Follower(followerId)
             follower.user_hashtags = self.getHashTagsFromTimeLine(followerId, maxNumberOfPosts)
-            follower.user_tweets = self.getTweetsFromTimeLine(followerId, maxNumberOfPosts)
+            #follower.user_tweets = self.getTweetsFromTimeLine(followerId, maxNumberOfPosts)
             self.politiciansFollowers.add(follower)
         return
 
