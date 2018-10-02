@@ -1,7 +1,6 @@
 from twitter import *
 
-dbName = "myPoliticianData"
-dbCollection = "Politicians"
+dbName = "Politicians"
 
 def testDb(politicianData):
     for user in politicianData:
@@ -27,13 +26,6 @@ def getPoliticians():
 
 def main():
     client = TwitterSearch()
-    #client.getHashTagsFromUserByPolitician(128372940, 10, 100)
-    myDb = DataBase(dbName, dbCollection)
-
-    #politicianData = client.getPolitician()
-    #myDb.create(128372940, politicianData)
-    #policicianData = myDb.read(128372940)
-    #testDb(policicianData)
     politicians = getPoliticians()
 
     for politician in politicians:
@@ -41,6 +33,7 @@ def main():
         # maxNumberOfFollowers = quantidade de seguidores de politicianId
         # maxNumberOfPosts = quantidade de posts dos followers de politicianId
         client.getHashTagsFromUserByPolitician(politician.politicianId, 10, 10)
+        myDb = DataBase(dbName, politician.politicianName)
         myDb.create(politician.politicianId, client.getPolitician())
 
 if __name__ == "__main__":

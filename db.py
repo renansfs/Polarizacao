@@ -11,8 +11,7 @@ class DataBase(object):
 
     def create(self, politician_id, data):
         for user in data:
-            if(len(user.user_hashtags) > 0):
-                self.politicians[politician_id].insert({"id" : str(user.followerId), "hashtags" : list(user.get_hashtags())})
+                self.politicians[politician_id].insert({"id" : str(user.followerId), "Tweets: ": list(user.get_tweets()), "hashtags" : list(user.get_hashtags())})
 
     def read(self, politician_id):
         result = self.politicians[politician_id].find()
