@@ -25,14 +25,15 @@ def getPoliticians():
 
 
 def main():
-    client = TwitterSearch()
+    
     politicians = getPoliticians()
 
     for politician in politicians:
         # politicianId = ID do usuario
         # maxNumberOfFollowers = quantidade de seguidores de politicianId
         # maxNumberOfPosts = quantidade de posts dos followers de politicianId
-        client.getHashTagsFromUserByPolitician(politician.politicianId, 10, 10)
+        client = TwitterSearch()
+        client.getHashTagsFromUserByPolitician(politician.politicianId, 5000, 500)
         myDb = DataBase(dbName, politician.politicianName)
         myDb.create(politician.politicianId, client.getPolitician())
 
