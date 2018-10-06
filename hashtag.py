@@ -18,6 +18,11 @@ class HashTags(object):
                 continue
             self.hashAllTags[hashTag] = 1
 
+    def removeLowerValues(self, frequency):
+        for key, value in self.hashAllTags.copy().items():
+            if value < frequency:
+                self.hashAllTags.pop(key)
+
     def Sort(self):
         self.hashAllTags = sorted(self.hashAllTags.items(), key=lambda value: value[1])
 
