@@ -1,10 +1,10 @@
 import json
 import secret
 import time
-from db import DataBase
-from follower import Follower
-from politician import Politician
-from hashtag import HashTags
+from infra/db import DataBase
+from model/follower import Follower
+from model/politician import Politician
+from model/hashtag import HashTags
 from requests_oauthlib import OAuth1Session
 from collections import OrderedDict
 

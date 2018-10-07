@@ -1,13 +1,15 @@
-from politician import Politician
-from db import DataBase
-from hashtag import HashTags
+from model/politician import Politician
+from infra/db import DataBase
+from model/hashtag import HashTags
+from util/writer import Writer
 import csv
 
 dbName = "Politicians"
 
-def main():
+def getHashtags(offset):
     politicians = Politician.getPoliticians()    
     myHashtags = HashTags()
+    writer = Writer()
     
     for politician in politicians:
         myDb = DataBase(dbName, politician.politicianName)
@@ -19,17 +21,14 @@ def main():
             for hashtag in hashtags:
                 myHashtags.addHashTag(hashtag)
 
-    myHashtags.setOffset(50)
+    myHashtags.setOffset(offset)
     myHashtags.Sort()
 
-    with open("hashtag_data.csv", "w") as csvFile:
-        writer = csv.writer(csvFile)
+    writer.toCSV("hashtag_data.csv", myHashtags.getHashTags())
 
-        for hashtag in myHashtags.getHashTags():
-            row = [hashtag[0], hashtag[1]]
-            writer.writerow(row)
 
-    csvFile.close()
+def main():
+    getHashtags(50)
 
 if __name__ == "__main__":
     main() 

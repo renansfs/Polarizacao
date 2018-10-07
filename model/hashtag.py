@@ -18,7 +18,7 @@ class HashTags(object):
                 continue
             self.hashAllTags[hashTag] = 1
 
-    def removeLowerValues(self, frequency):
+    def setOffset(self, frequency):
         for key, value in self.hashAllTags.copy().items():
             if value < frequency:
                 self.hashAllTags.pop(key)
