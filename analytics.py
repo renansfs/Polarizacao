@@ -31,7 +31,7 @@ def main():
     #getHashtags(50)
 
     myGraph = Graph()
-    myGraph.createNode()
+    myGraph.createPoliticianNode(Politician.getPoliticians())
 
 if __name__ == "__main__":
     main() 
