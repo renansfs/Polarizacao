@@ -1,7 +1,8 @@
-from model/politician import Politician
-from infra/db import DataBase
-from model/hashtag import HashTags
-from util/writer import Writer
+from model.politician import Politician
+from infra.db import DataBase
+from model.hashtag import HashTags
+from util.writer import Writer
+from graph import Graph
 import csv
 
 dbName = "Politicians"
@@ -26,9 +27,11 @@ def getHashtags(offset):
 
     writer.toCSV("hashtag_data.csv", myHashtags.getHashTags())
 
-
 def main():
-    getHashtags(50)
+    #getHashtags(50)
+
+    myGraph = Graph()
+    myGraph.createNode()
 
 if __name__ == "__main__":
     main() 

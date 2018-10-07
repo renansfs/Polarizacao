@@ -1,4 +1,4 @@
-from follower import Follower
+from model.follower import Follower
 
 class Politician(Follower):
     
