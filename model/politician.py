@@ -21,10 +21,10 @@ class Politician(Follower):
             Politician("762402774260875265", "Guilherme Boulos", "PSOL"),
             Politician("870030409890910210", "Henrique Meirelles", "MDB"),
             Politician("128372940", "Jair Bolsonaro", "PSL"),
-            Politician("256730310", "João Amoêdo", "Novo"),
-            Politician("164687650", "João Goulart Filho", "PPL"),
-            Politician("73889361", "José Maria Eymael", "DC"),
+            Politician("256730310", "Joao Amoedo", "Novo"),
+            Politician("164687650", "Joao Goulart Filho", "PPL"),
+            Politician("73889361", "Jose Maria Eymael", "DC"),
             Politician("354095556","Fernando Haddad", "PT"),
             Politician("105155795", "Marina Silva", "Rede"),
-            Politician("634712862", "Vera Lúcia", "PSTU")
+            Politician("634712862", "Vera Lucia", "PSTU")
         ]

@@ -24,10 +24,10 @@ class HashTags(object):
                 self.hashAllTags.pop(key)
 
     def Sort(self):
-        self.hashAllTags = sorted(self.hashAllTags.items(), key=lambda value: value[1])
+        self.hashAllTags = dict(sorted(self.hashAllTags.items(), key=lambda value: value[1]))
 
     def Reverse(self):
-        self.hashAllTags = sorted(self.hashAllTags.items(), key=lambda value: value[1], reverse=True)
+        self.hashAllTags = dict(sorted(self.hashAllTags.items(), key=lambda value: value[1], reverse=True))
     
     def getHashTags(self):
         return (self.hashAllTags)
