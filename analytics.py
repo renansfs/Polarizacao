@@ -5,8 +5,7 @@ from infra.db import DataBase
 from model.hashtag import HashTags
 from util.writer import Writer
 from graph import Graph
-import urllib3
-import csv
+import csv, random, urllib3
 import plotly.plotly as py
 import plotly.graph_objs as go
 import networkx as nx
@@ -62,9 +61,9 @@ def getDictHashtags():
     return result
 
     
-def createGraphByPolitician(offset):
+def createGraphByAllPolitician(offset):
     politicians = Politician.getPoliticians()
-
+    listEdges = list()
     G = nx.Graph()
     for politician in politicians:
         ffile = open("Dados/HashTags"+politician.politicianName+".csv", "r", encoding="utf8")
@@ -72,40 +71,67 @@ def createGraphByPolitician(offset):
 
         i=0
         for hash in reader:
-            G.add_edge(politician.politicianName, hash[0], weight=0.6)
+            G.add_edge(politician.politicianName, "#"+hash[0], polId=politician.politicianId)
             if i == offset:
                 break
             i= i + 1
+        listEdges.append([(u, v) for (u, v, d) in G.edges(data=True) if d['polId'] == politician.politicianId])
 
-    elarge = [(u, v) for (u, v, d) in G.edges(data=True) if d['weight'] > 0.5]
-    esmall = [(u, v) for (u, v, d) in G.edges(data=True) if d['weight'] <= 0.5]
-    
     pos = nx.spring_layout(G)
 
     # nodes
-    nx.draw_networkx_nodes(G, pos, node_size=2000)
+    nx.draw_networkx_nodes(G, pos, node_color='#D0D3D4', node_size=300)
 
     # edges
-    nx.draw_networkx_edges(G, pos, edgelist=elarge, width=6, edge_color='r')
-    nx.draw_networkx_edges(G, pos, edgelist=esmall, width=6, alpha=0.5, edge_color='b', style='dashed')
+    for edge in listEdges:
+        color = '#%02X%02X%02X' % (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+        nx.draw_networkx_edges(G, pos, edgelist=edge, width=6, edge_color=color)
 
     # labels
-    nx.draw_networkx_labels(G, pos, font_size=20, font_family='sans-serif')
+    nx.draw_networkx_labels(G, pos, font_size=10, font_family='sans-serif')
 
     plt.axis('off')
     plt.show()
+
+def createGraphByEachPolitician(offset):
+    politicians = Politician.getPoliticians()
+    
+    for politician in politicians:
+        listEdges = list()
+        G = nx.Graph()
+        ffile = open("Dados/HashTags"+politician.politicianName+".csv", "r", encoding="utf8")
+        reader = csv.reader(ffile, delimiter=';')
+
+        i=0
+        for hash in reader:
+            G.add_edge(politician.politicianName, "#"+hash[0], polId=politician.politicianId)
+            if i == offset:
+                break
+            i= i + 1
+        listEdges.append([(u, v) for (u, v, d) in G.edges(data=True) if d['polId'] == politician.politicianId])
+
+        pos = nx.spring_layout(G)
+
+        # nodes
+        nx.draw_networkx_nodes(G, pos, node_color='#D0D3D4', node_size=300)
+
+        # edges
+        for edge in listEdges:
+            color = '#%02X%02X%02X' % (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+            nx.draw_networkx_edges(G, pos, edgelist=edge, width=6, edge_color=color)
+
+        # labels
+        nx.draw_networkx_labels(G, pos, font_size=10, font_family='sans-serif')
+
+        plt.axis('off')
+        plt.show()
 
 def main():
     #PoliticiansHash = getDictHashtags()
     #HashTags = getHashtags()
 
-    #for hashes in PoliticiansHash:
-    #    for h in PoliticiansHash[hashes].getHashTags():
-    #        pass
-            #print (h)
-    #myGraph = Graph()
-    #myGraph.createPoliticianNode(Politician.getPoliticians())
-    createGraphByPolitician(10)
+    #createGraphByAllPolitician(50)
+    #createGraphByEachPolitician(50)
     print ("Done!")
 
 if __name__ == "__main__":
