@@ -18,7 +18,7 @@ import numpy as np
 dbName = "Politicians"
 
 
-def getHashtags():
+def getAllHashtags():
     result = HashTags()
     politicians = Politician.getPoliticians()    
     ffile = open("AllHashTags.csv", "a+", encoding="utf8")
@@ -26,12 +26,16 @@ def getHashtags():
     for politician in politicians:
         myDb = DataBase(dbName, politician.politicianName)
         political = myDb.read(politician.politicianId)
+        max = politician.totalFollowers
+        count = 0
         for followers in political:
+            if int(count) == int(max):
+                break
+            count += 1
             hashtags = followers["hashtags"]
-            
             for hashtag in hashtags:
                 result.addHashTag(hashtag)
-    
+            
     result.Reverse()
     for key in result.getHashTags().keys():
         ffile.write("%s; %s \n" %(key, result.getHashTags()[key]))
@@ -48,12 +52,19 @@ def getDictHashtags():
         political = myDb.read(politician.politicianId)
         result[politician.politicianName] = HashTags()
 
+        max = politician.totalFollowers
+        count = 0
         for followers in political:
+            if int(count) == int(max):
+                break
             hashtags = followers["hashtags"]
+            count += 1
 
             for hashtag in hashtags:
                 result[politician.politicianName].addHashTag(hashtag)
+        
         result[politician.politicianName].Reverse()
+
         for key in result[politician.politicianName].getHashTags().keys():
             ffile.write("%s; %s \n" %(key, result[politician.politicianName].getHashTags()[key]))
         ffile.close()
@@ -127,8 +138,8 @@ def createGraphByEachPolitician(offset):
         plt.show()
 
 def main():
-    #PoliticiansHash = getDictHashtags()
-    #HashTags = getHashtags()
+    getDictHashtags()
+    getAllHashtags()
 
     #createGraphByAllPolitician(50)
     #createGraphByEachPolitician(50)

@@ -8,20 +8,19 @@ def testDb(politicianData):
 
 def getPoliticians():
     return [
-        #Politician("73745956", "Alvaro Dias", "Podemos"),
-        #Politician("989899804200325121", "Cabo Daciolo", "Patriota"),
-        #Politician("33374761", "Ciro Gomes", "PDT"),
-        #Politician("74215006", "Geraldo Alckmin", "PSDB"),
-        #Politician("762402774260875265", "Guilherme Boulos", "PSOL"),
-        #Politician("870030409890910210", "Henrique Meirelles", "MDB"),
-        #Politician("128372940", "Jair Bolsonaro", "PSL"),
-        #Politician("256730310", "João Amoêdo", "Novo"),
-        #Politician("164687650", "João Goulart Filho", "PPL"),
-        #Politician("73889361", "José Maria Eymael", "DC"),
-        #Politician("59915378", "Luiz Inácio Lula da Silva", "PT"),
-        #Politician("105155795", "Marina Silva", "Rede"),
-        #Politician("634712862", "Vera Lúcia", "PSTU")
-        Politician("354095556","Fernando Haddad", "PT")
+            #Politician("73745956", "Alvaro Dias", "Podemos", "0.0563"),
+            #Politician("989899804200325121", "Cabo Daciolo", "Patriota", "0.0039"),
+            #Politician("33374761", "Ciro Gomes", "PDT", "0.0515"),
+            #Politician("74215006", "Geraldo Alckmin", "PSDB", "0.1585"),
+            #Politician("762402774260875265", "Guilherme Boulos", "PSOL", "0.0217"),
+            #Politician("870030409890910210", "Henrique Meirelles", "MDB", "0.0101"),
+            #Politician("128372940", "Jair Bolsonaro", "PSL", "0.2453"),
+            #Politician("256730310", "Joao Amoedo", "Novo", "0.0322"),
+            #Politician("164687650", "Joao Goulart Filho", "PPL". "0.002"),
+            #Politician("73889361", "Jose Maria Eymael", "DC", "0.0037"),
+            #Politician("354095556","Fernando Haddad", "PT", "0.1117"),
+            #Politician("105155795", "Marina Silva", "Rede", "0.3046"),
+            #Politician("634712862", "Vera Lucia", "PSTU", "0.002")
     ]
 
 
