@@ -20,7 +20,7 @@ dbName = "Politicians"
 
 def getAllHashtags():
     result = HashTags()
-    politicians = Politician.getPoliticians()    
+    politicians = Politician.getPoliticians()
     ffile = open("AllHashTags.csv", "a+", encoding="utf8")
 
     for politician in politicians:
@@ -41,6 +41,49 @@ def getAllHashtags():
         ffile.write("%s; %s \n" %(key, result.getHashTags()[key]))
     ffile.close()
     return result
+
+
+def getAllNodesAndArestas():
+    filtered = list()
+    arestas = dict()
+    politicians = Politician.getPoliticians()
+    
+    print("Started")
+    for politician in politicians:
+        arestas[politician.politicianName] = set()
+        with open("Dados/HashTags"+politician.politicianName+".csv", "r", encoding="utf8") as ffile:
+            line = ffile.readline()
+            filtered.append(politician.politicianName)
+            
+            count = 0
+            while line and count < 100:
+                content = line.split(";")
+                arestas[politician.politicianName].add(content[0])
+                if content[0] not in filtered:
+                    filtered.append(content[0])
+                line = ffile.readline()
+                count +=1    
+
+            ffile.close()
+        
+        with open("Dados/Arestas/ArestasBy"+politician.politicianName+".csv", "+a", encoding="utf8") as ffile:
+            count = 0
+            ffile.write("Source, Target, Type, Id, Label, Weight\n")
+            
+            for hashtag in arestas[politician.politicianName]:
+                if hashtag in filtered:
+                    ffile.write("{},{},Directed,{},{}, 1\n".format(filtered.index(politician.politicianName), filtered.index(hashtag), count, hashtag))
+                    count += 1
+            ffile.close()
+    
+    with open("Dados/Nodes/NodesFiltered.csv", "+a", encoding="utf8") as ftotal:
+        count = 0
+        ftotal.write("Label, Id\n")
+        for line in filtered:
+            ftotal.write("{},{}\n".format(line, count))
+            count +=1
+        ftotal.close()
+    
 
 def getDictHashtags():
     result = dict()
@@ -138,9 +181,9 @@ def createGraphByEachPolitician(offset):
         plt.show()
 
 def main():
-    getDictHashtags()
-    getAllHashtags()
-
+    #getDictHashtags()
+    #getAllHashtags()
+    getAllNodesAndArestas()
     #createGraphByAllPolitician(50)
     #createGraphByEachPolitician(50)
     print ("Done!")

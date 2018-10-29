@@ -1,0 +1,12 @@
+Source, Target, Type, Id, Label, Weight
+397,399,Directed,0,lutaecompromisso, 1
+397,169,Directed,1,lulapresidente, 1
+397,371,Directed,2,lulamanuhaddad, 1
+397,398,Directed,3,presidenciável, 1
+397,150,Directed,4,pt, 1
+397,31,Directed,5,lulalivre, 1
+397,138,Directed,6,coiso, 1
+397,381,Directed,7,lulaécandidato, 1
+397,52,Directed,8,brasil, 1
+397,400,Directed,9,vereadorisac, 1
+397,250,Directed,10,politica, 1
