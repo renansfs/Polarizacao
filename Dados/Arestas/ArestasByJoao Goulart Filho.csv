@@ -1,8 +1,8 @@
 Source, Target, Type, Id, Label, Weight
-342,96,Directed,0,manunojaburu, 1
-342,122,Directed,1,elenão, 1
-342,343,Directed,2,nossaselecao, 1
-342,344,Directed,3,lulaéhaddad, 1
-342,346,Directed,4,lulalivrejá, 1
-342,133,Directed,5,timelula, 1
-342,345,Directed,6,forçapedro, 1
+342,133,Directed,0,timelula, 1 
+342,343,Directed,1,nossaselecao, 1 
+342,122,Directed,2,elenão, 1 
+342,345,Directed,3,forçapedro, 1 
+342,346,Directed,4,lulalivrejá, 1 
+342,344,Directed,5,lulaéhaddad, 1 
+342,96,Directed,6,manunojaburu, 1 

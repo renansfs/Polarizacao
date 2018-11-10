@@ -17,7 +17,7 @@ import numpy as np
 
 dbName = "Politicians"
 
-
+#Get All Hashtags from the Database
 def getAllHashtags():
     result = HashTags()
     politicians = Politician.getPoliticians()
@@ -42,7 +42,7 @@ def getAllHashtags():
     ffile.close()
     return result
 
-
+#Filter and get all nodes and arestas to be applied into Gephi
 def getAllNodesAndArestas():
     filtered = list()
     arestas = dict()
@@ -58,7 +58,7 @@ def getAllNodesAndArestas():
             count = 0
             while line and count < 100:
                 content = line.split(";")
-                arestas[politician.politicianName].add(content[0])
+                arestas[politician.politicianName].add(line)
                 if content[0] not in filtered:
                     filtered.append(content[0])
                 line = ffile.readline()
@@ -71,8 +71,9 @@ def getAllNodesAndArestas():
             ffile.write("Source, Target, Type, Id, Label, Weight\n")
             
             for hashtag in arestas[politician.politicianName]:
-                if hashtag in filtered:
-                    ffile.write("{},{},Directed,{},{}, 1\n".format(filtered.index(politician.politicianName), filtered.index(hashtag), count, hashtag))
+                line = hashtag.split(";")
+                if line[0] in filtered:
+                    ffile.write("{},{},Directed,{},{},{}".format(filtered.index(politician.politicianName), filtered.index(line[0]), count, line[0], line[1]))
                     count += 1
             ffile.close()
     
@@ -84,7 +85,7 @@ def getAllNodesAndArestas():
             count +=1
         ftotal.close()
     
-
+#Get the Hashtags by Politician and Save
 def getDictHashtags():
     result = dict()
     politicians = Politician.getPoliticians()    
@@ -114,7 +115,7 @@ def getDictHashtags():
             
     return result
 
-    
+#No Longer used, creates a graph using Graph
 def createGraphByAllPolitician(offset):
     politicians = Politician.getPoliticians()
     listEdges = list()
@@ -147,6 +148,7 @@ def createGraphByAllPolitician(offset):
     plt.axis('off')
     plt.show()
 
+#No longer use, Create a Graph by politician
 def createGraphByEachPolitician(offset):
     politicians = Politician.getPoliticians()
     
